@@ -28,9 +28,8 @@ const registerController = {
             if(!match){
                 return next(CustomErrorHandler.wrongCredentials())
             }
-
             // send access Token 
-            let access_token =  JwtService.sign({ _id: match._id, role: match.role})
+            let access_token =  JwtService.sign({ _id: user._id, role: user.role})
             res.json({access_token})
         }
         catch(err){
