@@ -43,7 +43,7 @@ const registerController = {
 
         try{
             const result = await user.save(user)
-            access_token =  JwtService.sign({ _id: result._id.toHexString(), role: result.role})
+            access_token =  JwtService.sign({ _id: result._id, role: result.role})
             res.json({access_token})
         }catch(err){
            return next(err)
