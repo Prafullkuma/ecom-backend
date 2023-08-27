@@ -4,6 +4,8 @@ import bcrypt from "bcrypt"
 import CustomErrorHandler from "../../services/CustomErrorHandler.js"
 import User from "../../models/user.js"
 import JwtService from "../../services/JwtService.js"
+import { REFRESH_SECRET } from "../../config/index.js"
+import refreshToken from "../../models/refreshToken.js"
 
 const registerController = {
     async register(req, res, next ){
@@ -40,20 +42,23 @@ const registerController = {
             password : hashedPassword
         })
         let access_token;
-
-        try{
+        let refresh_token;
+        try{    
             const result = await user.save(user)
             access_token =  JwtService.sign({ _id: result._id, role: result.role})
-            res.json({access_token})
+            refresh_token =  JwtService.sign({ _id: result._id, role: result.role}, '1y', REFRESH_SECRET)
+            // white list
+            await refreshToken.create({ 
+                token : refresh_token
+            })
+            res.json({access_token, refresh_token})
+
         }catch(err){
            return next(err)
         }
-
         // TODO : store in DB 
         // TODO : generate jwt -token 
         // TODO : send request 
-
-        res.send("Working")
     }
 }
 
