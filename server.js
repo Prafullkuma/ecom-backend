@@ -1,8 +1,18 @@
 import express from 'express';
+import path from "path"
 import { APP_PORT, DB_URL} from './config/index.js';
 import routes from './routes/index.js';
 import errorHandler from './middlewares/errorHandler.js';
 import mongoose from "mongoose"
+
+/*  To get the __dirname  */
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+/*  To get the __dirname  */
 
 
 const app = express();
@@ -17,6 +27,12 @@ const db = mongoose.connection;
       db.once('open', function callback () {
         console.log("connected database...");
       });
+
+
+
+global.appRoot = path.resolve(__dirname)
+
+app.use(express.urlencoded({ extended: false })) // to use multi part data
 
 app.use(express.json())
 

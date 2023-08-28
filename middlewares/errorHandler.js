@@ -32,3 +32,6 @@ export default errorHandler
 // 422 validation error 
 // 400 Bad requrest
 // 409 already exists
+// 201 create 
+// 404 Not Found
+ 
